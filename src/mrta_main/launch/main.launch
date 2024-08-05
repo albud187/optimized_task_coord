@@ -1,0 +1,39 @@
+<launch>
+
+    <node
+        name="system_monitor"
+        pkg="multi_agent_coord"
+        type="system_monitor.py"
+        output="screen"
+        launch-prefix ="xterm -hold -e"
+        >
+    </node>
+
+    <node
+        name="command_interface"
+        pkg="multi_agent_coord"
+        type="command_interface.py"
+        output="screen"
+        launch-prefix ="xterm -hold -e"
+        >
+    </node>
+
+    <!-- <node
+        name="offline_planner"
+        pkg="multi_agent_coord"
+        type="offline_planner.py"
+        output="screen"
+        launch-prefix ="xterm -hold -e"
+        >
+    </node> -->
+
+        <node
+        name="task_list_publisher"
+        pkg="multi_agent_coord"
+        type="task_list_publisher.py"
+        output="screen"
+        launch-prefix ="xterm -hold -e"
+        >
+    </node>
+
+</launch>
