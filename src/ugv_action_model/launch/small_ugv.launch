@@ -1,0 +1,92 @@
+<launch>
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+  <arg name="r_0"  default="r_0"/>
+  <arg name="r_1"  default="r_1"/>
+  <arg name="r_2"  default="r_2"/>
+  <arg name="r_3"  default="r_3"/>  
+  <arg name="r_4"  default="r_4"/>
+  <arg name="r_5"  default="r_5"/>
+
+  <arg name="r_0_x_pos" default="5"/>
+  <arg name="r_0_y_pos" default="-8"/>
+  <arg name="r_0_z_pos" default="0.0"/>
+  <arg name="r_0_yaw"   default="1.57"/>
+
+  <arg name="r_1_x_pos" default="6.5"/>
+  <arg name="r_1_y_pos" default="-8"/>
+  <arg name="r_1_z_pos" default="0.0"/>
+  <arg name="r_1_yaw"   default="1.57"/>
+
+  <arg name="r_2_x_pos" default="8"/>
+  <arg name="r_2_y_pos" default="-8"/>
+  <arg name="r_2_z_pos" default="0.0"/>
+  <arg name="r_2_yaw"   default="1.57"/>
+
+  <arg name="r_3_x_pos" default="5"/>
+  <arg name="r_3_y_pos" default="-6.5"/>
+  <arg name="r_3_z_pos" default="0.0"/>
+  <arg name="r_3_yaw"   default="1.57"/>
+
+  <arg name="r_4_x_pos" default="6.5"/>
+  <arg name="r_4_y_pos" default="-6.5"/>
+  <arg name="r_4_z_pos" default="0.0"/>
+  <arg name="r_4_yaw"   default="1.57"/>
+
+  <arg name="r_5_x_pos" default="8"/>
+  <arg name="r_5_y_pos" default="-6.5"/>
+  <arg name="r_5_z_pos" default="0.0"/>
+  <arg name="r_5_yaw"   default="1.57"/>
+
+  <param name="/use_sim_time" value="true" />
+  <!-- <arg name="world_name" value="empty_world.world"/> -->
+  <arg name="world_name" value="31T.world"/>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+   <arg name="world_name" value="worlds/$(arg world_name)"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
+   <arg name="paused" value="false"/>
+   <arg name="use_sim_time" value="true"/>
+   <arg name="gui" value="true"/>
+   <arg name="headless" value="false"/>
+   <arg name="debug" value="false"/>
+ </include>
+
+
+  <group ns = "$(arg r_0)">
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" value="$(arg r_0)" />
+    </node>
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg r_0) -x $(arg r_0_x_pos) -y $(arg r_0_y_pos) -z $(arg r_0_z_pos) -Y $(arg r_0_yaw) -param robot_description" />
+  </group>
+
+  <group ns = "$(arg r_1)">
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" value="$(arg r_1)" />
+    </node>
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model $(arg r_1) -x $(arg r_1_x_pos) -y $(arg r_1_y_pos) -z $(arg r_1_z_pos) -Y $(arg r_1_yaw) -param robot_description" />
+  </group>
+  
+    <group ns="r_0">
+        <include file="$(find ugv_action_model)/launch/ugv.launch" >
+        </include>
+    </group>
+
+    
+    <group ns="r_1">
+        <include file="$(find ugv_action_model)/launch/ugv.launch" >
+        </include>
+    </group>
+
+    
+    <node
+    name="RVO_planner"
+    pkg="ugv_action_model"
+    type="RVO_planner.py"
+    output="screen"
+    launch-prefix ="xterm -hold -e"
+    >
+  </node>
+
+</launch>

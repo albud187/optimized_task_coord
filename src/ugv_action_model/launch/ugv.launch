@@ -1,0 +1,42 @@
+<launch>
+    <node
+      name="pose_reporter_sim"
+      pkg="ugv_action_model"
+      type="pose_reporter.py"
+      >
+    </node>
+
+    <node
+      name="status_task_manager"
+      pkg="ugv_action_model"
+      type="status_task_manager.py"
+      launch-prefix ="xterm -hold -e"
+      >
+    </node>
+
+    <node
+      name="task_list_sub"
+      pkg="ugv_action_model"
+      type="task_list_sub.py"
+      launch-prefix ="xterm -hold -e"
+      >
+    </node>
+
+    <node
+      name="robot_usage"
+      pkg="ugv_action_model"
+      type="robot_usage.py"
+      >
+    </node>
+
+    <node
+      name="velocity_publisher"
+      pkg="ugv_action_model"
+      type="velocity_publisher.py" 
+      launch-prefix ="xterm -hold -e"
+      >
+    </node>
+
+
+
+</launch>
