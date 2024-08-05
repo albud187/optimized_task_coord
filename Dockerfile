@@ -32,5 +32,9 @@ RUN apt update \
     && apt install nano \
     && apt install -y xterm
 
+RUN apt install -y python3-pip
+COPY requirements.txt requirements.txt
+RUN python3 -m pip install -r requirements.txt
+
 # Default command to launch a bash shell
 CMD ["bash"]
