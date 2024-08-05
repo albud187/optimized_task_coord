@@ -38,7 +38,8 @@ When running the container using `dockerrun.sh`, the project directory is mounte
 ## Setup
 
 1 - Clone the repo and change directory into the repo:
-`git@github.com:albud187/optimized_task_coord.git`
+
+`git clone git@github.com:albud187/optimized_task_coord.git`
 
 `cd optimized_task_coord`
 
