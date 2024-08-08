@@ -30,6 +30,9 @@ from MRTA.genetic_helper import (Af_to_sol, sol_to_Af,
 from MRTA.genetic import (generate_population, 
                           genetic_algorithm_iteration, 
                           fitness)
+
+from MRTA._MRTA_constants import *
+
 print("IMPORTS GOOD TO GO")
 #subscribed topics
 T_POSEx = "/pose_est"
@@ -55,16 +58,13 @@ R = {}
 
 R_av = {}
 T = {}
-hd_T = []
+
 REMAINING_T = {}
 time.sleep(1)
-INPUTS_PATH = "/home/alfab/catkin_ws/src/multi_agent_coord/system_inputs"
 
-ROBOTS_FILE = "groundsearch_desc.csv"
-SUITABILITY_FILE = "groundsearch_suit.csv"
-
-robots_input = os.path.join(INPUTS_PATH, ROBOTS_FILE)
-suitability_input = os.path.join(INPUTS_PATH, SUITABILITY_FILE)
+robots_input = os.path.join(os.path.join(SCENARIO_DIR, SCENARIO_NAME), "agents.csv")
+suitability_input = os.path.join(os.path.join(SCENARIO_DIR, SCENARIO_NAME), "suitabilities.csv")
+tasks_input =  os.path.join(os.path.join(SCENARIO_DIR, SCENARIO_NAME), "tasks.csv")
 
 #params
 suitability_dict = suitability_csv(suitability_input)
@@ -77,12 +77,6 @@ def handle_alloc_task(msg):
     global T
     task_idx = msg.data
     T.pop(task_idx)
-
-def handle_h_task(msg):
-    #append to h_T
-    global hd_T
-    hd_t_idx = msg.data
-    hd_T.append(hd_t_idx)
 
 #dynamic insantiation
 def list_topics():
@@ -141,7 +135,7 @@ def update_agents(ALL_POSE, ALL_USG, ALL_STATUS):
         R[r_id].constraintUsage = ALL_USG[usg_topic].data
         R[r_id].status = ALL_STATUS[stat_topic].data
 
-#callbacks / topic handling
+#need to modify to just take in file path
 def validate_command(com_in):
     """
     input: string com_in
@@ -149,7 +143,6 @@ def validate_command(com_in):
     description: validates command to determine desired action
     a=filename.csv (assigns tasks from filename.csv optimally)
     a=s (stops all agents, sets to status available)
-    a=x,y (optimally assigns an agent to waypoint x,y)
     """
 
     try:
@@ -288,13 +281,7 @@ def check_new_comd(comd_msg):
     prev_comd_msg_seq = comd_msg.header.seq
     return result
 
-def check_task_discovery():
-    #gets new task detected
-    #checks incomplete tasks
-    #creates dummy robots
-    #runs offline allocation
-    #re-assigns task list
-    pass
+
 #get list of topics and all robots
 all_topics = list_topics()
 pose_topics = find_topics(all_topics, T_POSEx)
@@ -306,6 +293,7 @@ for t in pose_topics:
 
 time.sleep(1)
 def main_loop():
+
     global ALL_POSE
     global ALL_STATUS
     global ALL_USG
@@ -351,16 +339,15 @@ def main_loop():
     Kd, Kt = 1,1
     plotSize = 7
     #loop
-    must_update = True
+  
     while not rospy.is_shutdown():
         #print("waiting")
         
         if cmd_check == "multi_task" and check_new_comd(COMD_MSG)==True:
             #initialize
             filename = COMD_MSG.header.frame_id.split("=")[1]
-          
-            task_file = os.path.join(INPUTS_PATH, filename)
-          
+            
+            task_file =  os.path.join(os.path.join(SCENARIO_DIR, filename), "tasks.csv")
             T = csv_task(task_file)
             
             nodes = full_list(R,T)
@@ -401,25 +388,6 @@ def main_loop():
             cmd_check = validate_command(COMD_MSG.header.frame_id)
         
             #init list of current waypoints
-        if len(hd_T)>0:
-            filename_list = filename.split(".")
-            h_T_filepath = filename_list[0]+"-h."+filename_list[1]
-            h_tasks = csv_task(h_T_filepath)
-
-            for t in hd_T:
-                T[t]=h_tasks[t]
-            
-            #check loop thru each 
-            for r_i in AR:
-                for ti in AR[r_i]:
-                    if ti not in T:
-                        A[r_i].pop(ti)
-            #run greedy algorithm
-            #determine which robot gets it
-            #publish the new task sequence to that robot
-
-            hd_T=[]
-            pass
 
 if __name__ == '__main__':
     try:

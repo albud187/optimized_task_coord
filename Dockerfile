@@ -29,10 +29,11 @@ RUN /bin/bash -c "source /opt/ros/noetic/setup.bash; catkin_make"
 RUN echo "source /root/catkin_ws/devel/setup.bash" >> /root/.bashrc
 
 RUN apt update \
+    && apt install -y python3-pip \
     && apt install nano \
-    && apt install -y xterm
+    && apt install -y xterm \
+    && apt install -y python3-tk
 
-RUN apt install -y python3-pip
 COPY requirements.txt requirements.txt
 RUN python3 -m pip install -r requirements.txt
 
