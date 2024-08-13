@@ -7,11 +7,11 @@ The tasks considered are "go to goal" and "patrol" tasks. The UGVs considered ar
 
 This repo contains 3 ros packages that are intended to be exectued from a docker container (Dockerfile included, along with build and run scripts):
 
-`mrta_admin` - launch files, robots and tasks descriptions
+`mrta_admin` - launch files, robots and tasks descriptions. Additional information on the mrta_admin package is on [mrta_admin/README.md](https://github.com/albud187/optimized_task_coord/blob/main/src/mrta_admin/README.md).
 
-`mrta_main` - Task allocation algorithm. Additional inforamtion on the mrta_main package is on <link> and describes the file structure / usage of this package.
+`mrta_main` - Task allocation algorithm. Additional information on the mrta_main package is on [mrta_main/README.md](https://github.com/albud187/optimized_task_coord/blob/main/src/mrta_main/README.md). and describes the file structure / usage of this package.
 
-`ugv_action_model` - Motion planning and state management for UGVs. Additional inforamtion on the mrta_main package is on <link> and describes the file structure / usage of this package.
+`ugv_action_model` - Motion planning and state management for UGVs. Additional inforamtion on the mrta_main package is on [ugv_action_model/README.md](https://github.com/albud187/optimized_task_coord/blob/main/src/ugv_action_model/README.md). and describes the file structure / usage of this package.
 
 
 ### _**Local Machine**_
@@ -62,7 +62,7 @@ When running the container using `dockerrun.sh`, the project directory is mounte
 
 Unless otherwise stated, it is assumed that the setup is completed and you are in the docker container on `/workdir`
 
-All instructions here concern running a demo. Instructions to create your own scenario are on <link>
+All instructions here concern running a demo scenario included in this repo. Instructions to create your own scenario are on [mrta_admin/README.md](https://github.com/albud187/optimized_task_coord/blob/main/src/mrta_admin/README.md)
 
 ### _**RQT Demo**_
 
