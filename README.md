@@ -36,6 +36,8 @@ When running the container using `dockerrun.sh`, the project directory is mounte
 
 ## Setup
 
+This repository is intended to be run using the provided docker container. In order to run it without the container, you will have to install the dependancies as well as change file path variables in the .py scripts. A list of dependancies is not provided, but can be reverse engineered from the provided `Dockerfile` and `requirements.txt`
+
 1 - Clone the repo and change directory into the repo:
 
 `git clone git@github.com:albud187/optimized_task_coord.git`
