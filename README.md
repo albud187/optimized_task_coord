@@ -117,5 +117,5 @@ This will launch a gazebo simulation with 6 turtlebots.
 >>need images of scenario
 
 
-This will execute the optimization algorithms to assign tasks described in the `src/scenarios/31T-6R` to the 6 turtlebots. This scenario has 31 tasks and 6 robots. The tasks are described in `src/scenarios/31T-6R/tasks.csv`, the suitability between the robots and tasks are described in `src/scenarios/31T-6R/suitabilities.csv`. The type of robots and their work capacity are described in `src/scenarios/31T-6R/agents.csv`. Instructions on creating your own scenario are described in LINK_HERE.
+This will execute the optimization algorithms to assign tasks described in the `src/scenarios/31T-6R` to the 6 turtlebots. This scenario has 31 tasks and 6 robots. The tasks are described in `src/scenarios/31T-6R/tasks.csv`, the suitability between the robots and tasks are described in `src/scenarios/31T-6R/suitabilities.csv`. The type of robots and their work capacity are described in `src/scenarios/31T-6R/agents.csv`. Instructions on creating your own scenario are described in [mrta_admin/README.md](https://github.com/albud187/optimized_task_coord/blob/main/src/mrta_admin/README.md).
 
