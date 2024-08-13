@@ -62,9 +62,9 @@ When running the container using `dockerrun.sh`, the project directory is mounte
 
 Unless otherwise stated, it is assumed that the setup is completed and you are in the docker container on `/workdir`
 
-All instructions here concern running a demo scenario included in this repo. Instructions to create your own scenario are on [mrta_admin/README.md](https://github.com/albud187/optimized_task_coord/blob/main/src/mrta_admin/README.md)
+All instructions here concern running a demo scenario (31T-6R) included in this repo. Instructions to create your own scenario are on [mrta_admin/README.md](https://github.com/albud187/optimized_task_coord/blob/main/src/mrta_admin/README.md)
 
-### _**RQT Demo**_
+### _**rqt Demo**_
 
 1 - Open two terminals and run the docker container. On both terminals execute:
 
