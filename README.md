@@ -82,6 +82,22 @@ This will launch a gazebo simulation with 6 turtlebots.
 
 We will use rqt to publish to the `r_n/task` topics, where `r_n` is the namespace of an individual robot and ranges from `r_0` to `r_5` for this demo.
 
+4 - The topics of `r_0/task` to `r_5/task` are of type PoseStamped, and describe tasks as follows:
+`PoseStamped.header.frame_id`: type of task. String. Set it to "A" for a goal to goal task. Set it to "D" for a patrol task.
+
+`PoseStamped.pose.position.x`: x coordinate of task location. Float.
+
+`PoseStamped.pose.position.y`: y coordinate of task location. Float.
+
+`PoseStamped.pose.orientation.x`: Length of patrol route. Only applicatible if `PoseStamped.header.frame_id = "D"`
+
+`PoseStamped.pose.orientation.w`: Task completion indicator. Set it to 1 (or anything not 0) otherwise the robot will not move.
+
+Example of topic to publish.
+
+5 - Publish the task topic. The robot corresponding to the task topic will execute the task.
+
+
 ## Usage (
 
 
