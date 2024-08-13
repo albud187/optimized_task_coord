@@ -58,13 +58,13 @@ When running the container using `dockerrun.sh`, the project directory is mounte
 
 `source devel/setup.bash`
 
-## Demo
+## Demos
 
 Unless otherwise stated, it is assumed that the setup is completed and you are in the docker container on `/workdir`
 
 All instructions here concern running a demo. Instructions to create your own scenario are on <link>
 
-### _**Multiple UGV Motion Planning Only**_
+### _**RQT Demo**_
 
 1 - Open two terminals and run the docker container. On both terminals execute:
 
@@ -93,11 +93,29 @@ We will use rqt to publish to the `r_n/task` topics, where `r_n` is the namespac
 
 `PoseStamped.pose.orientation.w`: Task completion indicator. Set it to 1 (or anything not 0) otherwise the robot will not move.
 
-Example of topic to publish.
+>>need image of rqt and robots moving
 
 5 - Publish the task topic. The robot corresponding to the task topic will execute the task.
 
 
-## Usage (
+### _**Multiple Robot Task Allocation Demo**_
 
+1 - Open two terminals and run the docker container. On both terminals execute:
+
+`sh dockerrun.sh`
+
+2 - On terminal 1 execute:
+
+`roslaunch ugv_action_model multi_ugv.launch`
+
+This will launch a gazebo simulation with 6 turtlebots.
+
+3 - On terminal 2 execute:
+
+`roslaunch mrta_main main.launch _scenario:=31T-6R`
+
+>>need images of scenario
+
+
+This will execute the optimization algorithms to assign tasks described in the `src/scenarios/31T-6R` to the 6 turtlebots. This scenario has 31 tasks and 6 robots. The tasks are described in `src/scenarios/31T-6R/tasks.csv`, the suitability between the robots and tasks are described in `src/scenarios/31T-6R/suitabilities.csv`. The type of robots and their work capacity are described in `src/scenarios/31T-6R/agents.csv`. Instructions on creating your own scenario are described in LINK_HERE.
 
