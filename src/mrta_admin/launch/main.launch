@@ -1,0 +1,20 @@
+<launch>
+
+    <node
+        name="system_monitor"
+        pkg="mrta_main"
+        type="system_monitor.py"
+        output="screen"
+        launch-prefix ="xterm -hold -e"
+        >
+    </node>
+
+    <arg name="scenario_name" default="31T-6R" />
+    <node pkg="mrta_main" 
+        type="task_list_pub.py" 
+        output="screen"
+        launch-prefix ="xterm -hold -e"
+        >
+    </node>
+
+</launch>
