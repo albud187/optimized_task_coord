@@ -60,6 +60,10 @@ This repository is intended to be run using the provided docker container. In or
 
 `source devel/setup.bash`
 
+5 - Make all `.py` files executable:
+
+`chmod +x ./*`
+
 ## Demos
 
 Unless otherwise stated, it is assumed that the setup is completed and you are in the docker container on `/workdir`
@@ -116,8 +120,9 @@ This will launch a gazebo simulation with 6 turtlebots.
 
 `roslaunch mrta_admin main.launch scenario:=31T-6R`
 
->>need images of scenario
+![Gazebo Simulation](https://github.com/albud187/optimized_task_coord/blob/main/.repo_images/gazebo_scenario.PNG)
 
+![Example Task Allocation](https://github.com/albud187/optimized_task_coord/blob/main/.repo_images/example_task_allocation.PNG)
 
 This will execute the optimization algorithms to assign tasks described in the `src/scenarios/31T-6R` to the 6 turtlebots. This scenario has 31 tasks and 6 robots. The tasks are described in `src/scenarios/31T-6R/tasks.csv`, the suitability between the robots and tasks are described in `src/scenarios/31T-6R/suitabilities.csv`. The type of robots and their work capacity are described in `src/scenarios/31T-6R/agents.csv`. Instructions on creating your own scenario are described in [mrta_admin/README.md](https://github.com/albud187/optimized_task_coord/blob/main/src/mrta_admin/README.md).
 
