@@ -10,7 +10,9 @@
     </node>
 
     <arg name="scenario_name" default="31T-6R" />
-    <node pkg="mrta_main" 
+    <node
+        name="task_list_pub" 
+        pkg="mrta_main" 
         type="task_list_pub.py" 
         output="screen"
         launch-prefix ="xterm -hold -e"
