@@ -257,7 +257,8 @@ def main_loop():
 
     rospy.init_node("task_list_publisher", anonymous = False)
     rate = rospy.Rate(4)
-    scenario_name = rospy.get_param('~scenario_name', '31T-6R')
+    scenario_name = rospy.get_param('~scenario_name', '')
+    print(scenario_name)
     #subscribers    
     #agent targetted subscribers and publishers
     for i in range(len(agent_ids)):

@@ -114,7 +114,7 @@ This will launch a gazebo simulation with 6 turtlebots.
 
 3 - On terminal 2 execute:
 
-`roslaunch mrta_admin main.launch _scenario:=31T-6R`
+`roslaunch mrta_admin main.launch scenario:=31T-6R`
 
 >>need images of scenario
 

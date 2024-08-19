@@ -9,7 +9,7 @@
         >
     </node>
 
-    <arg name="scenario_name" default="31T-6R" />
+    <arg name="scenario" />
     <node
         name="task_list_pub" 
         pkg="mrta_main" 
@@ -17,6 +17,7 @@
         output="screen"
         launch-prefix ="xterm -hold -e"
         >
+        <param name="scenario_name" value ="$(arg scenario)" />
     </node>
 
 </launch>
