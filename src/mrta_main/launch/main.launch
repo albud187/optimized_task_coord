@@ -2,38 +2,22 @@
 
     <node
         name="system_monitor"
-        pkg="multi_agent_coord"
+        pkg="mrta_main"
         type="system_monitor.py"
         output="screen"
         launch-prefix ="xterm -hold -e"
         >
     </node>
 
+    <arg name="scenario" />
     <node
-        name="command_interface"
-        pkg="multi_agent_coord"
-        type="command_interface.py"
+        name="task_list_pub" 
+        pkg="mrta_main" 
+        type="task_list_pub.py" 
         output="screen"
         launch-prefix ="xterm -hold -e"
         >
-    </node>
-
-    <!-- <node
-        name="offline_planner"
-        pkg="multi_agent_coord"
-        type="offline_planner.py"
-        output="screen"
-        launch-prefix ="xterm -hold -e"
-        >
-    </node> -->
-
-        <node
-        name="task_list_publisher"
-        pkg="multi_agent_coord"
-        type="task_list_publisher.py"
-        output="screen"
-        launch-prefix ="xterm -hold -e"
-        >
+        <param name="scenario_name" value ="$(arg scenario)" />
     </node>
 
 </launch>

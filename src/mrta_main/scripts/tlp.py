@@ -186,7 +186,14 @@ def handle_status(msg, args):
 
 def greedy_genetic(A, N_ITER, MUTA_PROB, CROSSOVER_PROB, 
                    adj, R0, s_mat, S_MIN, inter_task, T, POP_SIZE, suitability_dict):
-    
+    """
+    inputs: A = tuple( dict[list[task]] , dict[robotAgent] ), initial solution from greedy algorithm
+            N_ITER, MUTA_PROB, CROSSOVER_PROB, POP_SIZE, s_mat, S_MIN, suitability_dict = genetic algo params
+            adj = adjaceny matrix
+            R0 = dict[robotAgent]
+    outputs: dict[list[task]] result_allocation
+    description: calculates task allocation using genetic algorthim starting with greedy algorithm.
+    """
     start_sol = Af_to_sol(A)[0]
     rkeys = Af_to_sol(A)[1]
     pop = generate_population(POP_SIZE, start_sol, R0, T, 
@@ -201,10 +208,15 @@ def greedy_genetic(A, N_ITER, MUTA_PROB, CROSSOVER_PROB,
     best_fitness_idx = fitnesses.index(min(fitnesses))
     best_solution = pop[best_fitness_idx]
     
-    new_allocation = sol_to_Af(best_solution, T, rkeys)
-    return new_allocation
+    result_allocation = sol_to_Af(best_solution, T, rkeys)
+    return result_allocation
 
 def generate_task_sequence(r_id, A, filepath):
+    """
+    inputs: str r_id, dict[list[task]] A, str filepath
+    outputs: Int16MultiArray() resultlist
+    dscription: generates a list of tasks for robot with id of r_id, for publishing
+    """
     global TL_checks
     list_layout = MultiArrayLayout()
     list_dim = MultiArrayDimension()
@@ -226,7 +238,6 @@ def generate_task_sequence(r_id, A, filepath):
     TL_checks[r_id] = TL_checks[r_id]+1
     return result_list
 
-
 #get list of topics and all robots
 all_topics = list_topics()
 pose_topics = find_topics(all_topics, T_POSEx)
@@ -237,7 +248,7 @@ for t in pose_topics:
     agent_ids.append("/"+t.split("/")[1])
 
 time.sleep(1)
-def main_loop():
+def main_exec():
 
     global ALL_POSE
     global ALL_STATUS
@@ -252,16 +263,20 @@ def main_loop():
     rate = rospy.Rate(4)
     scenario_name = rospy.get_param('~scenario_name', '')
     print(scenario_name)
+
+    # file paths of input files
     robots_input = os.path.join(os.path.join(SCENARIO_DIR, scenario_name), "agents.csv")
     suitability_input = os.path.join(os.path.join(SCENARIO_DIR, scenario_name), "suitabilities.csv")
-    tasks_input =  os.path.join(os.path.join(SCENARIO_DIR, scenario_name), "tasks.csv")
+    task_file =  os.path.join(os.path.join(SCENARIO_DIR, scenario_name), "tasks.csv")
 
-    #params
+    #algorithm inputs and params
+    T = csv_task(task_file)
+    nodes = full_list(R,T)
+    adj = cost_matrix2(nodes)
     suitability_dict = suitability_csv(suitability_input)
     robot_dict = robot_csv(robots_input)
 
-    print()
-    #subscribers    
+    #subscribers and publishers  
     #agent targetted subscribers and publishers
     for i in range(len(agent_ids)):
         r_id = agent_ids[i]
@@ -286,20 +301,10 @@ def main_loop():
         
         TL_PUBS[r_id] = rospy.Publisher(r_id+T_task_listx, Int16MultiArray, queue_size=10)
         TL_checks[r_id]=1
-    # S_MIN = 0.01
-    # N_ITER, POP_SIZE, MUTA_PROB, CROSSOVER_PROB = 300, 10, 0.7, 0.7
-    # CHECK_DEPS, CHECK_PREREQS, CHECK_PERF_IDX = True, True, True
-    # K_D = 1
-    # MATPLOT_SIZE = 7
-
-    task_file =  os.path.join(os.path.join(SCENARIO_DIR, scenario_name), "tasks.csv")
-    T = csv_task(task_file)
-    
-    nodes = full_list(R,T)
-    adj = cost_matrix2(nodes)
 
     #greedy algorithm
-    A,Rf = greedy_allocation(R, T, CHECK_DEPS, CHECK_PREREQS, CHECK_PERF_IDX, 
+    print("executing genetic algorithm")
+    A, Rf = greedy_allocation(R, T, CHECK_DEPS, CHECK_PREREQS, CHECK_PERF_IDX, 
                                 S_MIN, K_D, K_D, suitability_dict)
     print("greedy algorithm stats")
     display_performance(A,adj)
@@ -308,7 +313,6 @@ def main_loop():
     
     # #genetic algorithm
     print("executing genetic algorithm")
-
     inter_task = prereq_and_deps(T)
     rkeys = Af_to_sol(A)[1]
     s_mat = suitability_matrix(suitability_dict, R, T, rkeys)
@@ -335,6 +339,6 @@ def main_loop():
 
 if __name__ == '__main__':
     try:
-        main_loop()
+        main_exec()
     except rospy.ROSInterruptException:
         pass
