@@ -174,10 +174,10 @@ def performance_index(numbers):
     result = 1 - gini_coeff
     return result
 
-def offline_allocation(R0, T0, use_dep_ratio, check_prereqs, check_perf_idx, s_min, Kd, Kt, suitability_dict):
+def greedy_allocation(R0, T0, use_dep_ratio, check_prereqs, check_perf_idx, s_min, Kd, Kt, suitability_dict):
     """
     inputs: dict[robotAgent] R0, dict[task] T0
-    result: dict[list[task]] A
+    result: tuple( dict[list[task]] A, dict[robotAgent] R )
     description: allocates tasks to robots, returns allocation and sequence of tasks as A
     """
     R = copy.deepcopy(R0)

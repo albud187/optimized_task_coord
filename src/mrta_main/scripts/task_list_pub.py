@@ -21,7 +21,7 @@ from MRTA.model import (csv_task, suitability_csv,
                         robot_csv, plot_allocation)
 
 
-from MRTA.greedy import offline_allocation
+from MRTA.greedy import greedy_allocation
 from MRTA.genetic_helper import (Af_to_sol, sol_to_Af, 
                                  suitability_matrix, prereq_and_deps, 
                                  full_list, cost_matrix2, 
@@ -62,13 +62,6 @@ T = {}
 REMAINING_T = {}
 time.sleep(1)
 
-robots_input = os.path.join(os.path.join(SCENARIO_DIR, SCENARIO_NAME), "agents.csv")
-suitability_input = os.path.join(os.path.join(SCENARIO_DIR, SCENARIO_NAME), "suitabilities.csv")
-tasks_input =  os.path.join(os.path.join(SCENARIO_DIR, SCENARIO_NAME), "tasks.csv")
-
-#params
-suitability_dict = suitability_csv(suitability_input)
-robot_dict = robot_csv(robots_input)
 
 #task allocation algorithm
 
@@ -191,16 +184,23 @@ def handle_status(msg, args):
     #print(arg1)
     ALL_STATUS[arg1]=msg
 
-def greedy_genetic(A, n_iter, muta_prob, crossover_prob, 
-                   adj, R0, s_mat, s_min, inter_task, T, pop_size):
-    
+def greedy_genetic(A, N_ITER, MUTA_PROB, CROSSOVER_PROB, 
+                   adj, R0, s_mat, S_MIN, inter_task, T, POP_SIZE, suitability_dict):
+    """
+    inputs: A = tuple( dict[list[task]] , dict[robotAgent] ), initial solution from greedy algorithm
+            N_ITER, MUTA_PROB, CROSSOVER_PROB, POP_SIZE, s_mat, S_MIN, suitability_dict = genetic algo params
+            adj = adjaceny matrix
+            R0 = dict[robotAgent]
+    outputs: dict[list[task]] result_allocation
+    description: calculates task allocation using genetic algorthim starting with greedy algorithm.
+    """
     start_sol = Af_to_sol(A)[0]
     rkeys = Af_to_sol(A)[1]
-    pop = generate_population(pop_size, start_sol, R0, T, 
-                        suitability_dict, s_mat, s_min, inter_task)
-    for _ in range(n_iter):
-        pop = genetic_algorithm_iteration(muta_prob, crossover_prob, pop, adj, R0,
-                                s_mat, suitability_dict, s_min, inter_task, T)
+    pop = generate_population(POP_SIZE, start_sol, R0, T, 
+                        suitability_dict, s_mat, S_MIN, inter_task)
+    for _ in range(N_ITER):
+        pop = genetic_algorithm_iteration(MUTA_PROB, CROSSOVER_PROB, pop, adj, R0,
+                                s_mat, suitability_dict, S_MIN, inter_task, T)
 
     fitnesses = []
     for p in pop:
@@ -208,10 +208,15 @@ def greedy_genetic(A, n_iter, muta_prob, crossover_prob,
     best_fitness_idx = fitnesses.index(min(fitnesses))
     best_solution = pop[best_fitness_idx]
     
-    new_allocation = sol_to_Af(best_solution, T, rkeys)
-    return new_allocation
+    result_allocation = sol_to_Af(best_solution, T, rkeys)
+    return result_allocation
 
 def generate_task_sequence(r_id, A, filepath):
+    """
+    inputs: str r_id, dict[list[task]] A, str filepath
+    outputs: Int16MultiArray() resultlist
+    dscription: generates a list of tasks for robot with id of r_id, for publishing
+    """
     global TL_checks
     list_layout = MultiArrayLayout()
     list_dim = MultiArrayDimension()
@@ -233,7 +238,6 @@ def generate_task_sequence(r_id, A, filepath):
     TL_checks[r_id] = TL_checks[r_id]+1
     return result_list
 
-
 #get list of topics and all robots
 all_topics = list_topics()
 pose_topics = find_topics(all_topics, T_POSEx)
@@ -244,7 +248,7 @@ for t in pose_topics:
     agent_ids.append("/"+t.split("/")[1])
 
 time.sleep(1)
-def main_loop():
+def main_exec():
 
     global ALL_POSE
     global ALL_STATUS
@@ -259,7 +263,20 @@ def main_loop():
     rate = rospy.Rate(4)
     scenario_name = rospy.get_param('~scenario_name', '')
     print(scenario_name)
-    #subscribers    
+
+    # file paths of input files
+    robots_input = os.path.join(os.path.join(SCENARIO_DIR, scenario_name), "agents.csv")
+    suitability_input = os.path.join(os.path.join(SCENARIO_DIR, scenario_name), "suitabilities.csv")
+    task_file =  os.path.join(os.path.join(SCENARIO_DIR, scenario_name), "tasks.csv")
+
+    #algorithm inputs and params
+    T = csv_task(task_file)
+    nodes = full_list(R,T)
+    adj = cost_matrix2(nodes)
+    suitability_dict = suitability_csv(suitability_input)
+    robot_dict = robot_csv(robots_input)
+
+    #subscribers and publishers  
     #agent targetted subscribers and publishers
     for i in range(len(agent_ids)):
         r_id = agent_ids[i]
@@ -284,42 +301,28 @@ def main_loop():
         
         TL_PUBS[r_id] = rospy.Publisher(r_id+T_task_listx, Int16MultiArray, queue_size=10)
         TL_checks[r_id]=1
-    s_min = 0.01
-    n_iter, pop_size, muta_prob, crossover_prob = 300, 10, 0.7, 0.7
-    check_deps, check_prereqs, check_perf_idx = True, True, True
-    Kd, Kt = 1,1
-    plotSize = 7
-    #loop
-  
-    
-    #print("waiting")
-    
-    task_file =  os.path.join(os.path.join(SCENARIO_DIR, scenario_name), "tasks.csv")
-    T = csv_task(task_file)
-    
-    nodes = full_list(R,T)
-    adj = cost_matrix2(nodes)
 
     #greedy algorithm
-    A,Rf = offline_allocation(R, T, check_deps, check_prereqs, check_perf_idx, 
-                                s_min, Kd, Kt, suitability_dict)
+    print("executing genetic algorithm")
+    A, Rf = greedy_allocation(R, T, CHECK_DEPS, CHECK_PREREQS, CHECK_PERF_IDX, 
+                                S_MIN, K_D, K_D, suitability_dict)
     print("greedy algorithm stats")
     display_performance(A,adj)
-    plot_allocation(R, A, T, plotSize)
+    plot_allocation(R, A, T, MATPLOT_SIZE)
     print(" ")
-    # #genetic algorithm
-    # print("executing genetic algorithm")
-
-    # inter_task = prereq_and_deps(T)
-    # rkeys = Af_to_sol(A)[1]
-    # s_mat = suitability_matrix(suitability_dict, R, T, rkeys)
-    # A2 = greedy_genetic(A, n_iter, muta_prob, crossover_prob, 
-    #     adj, R, s_mat, s_min, inter_task, T, pop_size)
-    # print("genetic algorithm stats")
     
-    # display_performance(A2,adj)
-    # plot_allocation(R, A2, T, plotSize)
-    # A = A2
+    # #genetic algorithm
+    print("executing genetic algorithm")
+    inter_task = prereq_and_deps(T)
+    rkeys = Af_to_sol(A)[1]
+    s_mat = suitability_matrix(suitability_dict, R, T, rkeys)
+    A2 = greedy_genetic(A, N_ITER, MUTA_PROB, CROSSOVER_PROB, 
+        adj, R, s_mat, S_MIN, inter_task, T, POP_SIZE, suitability_dict)
+    print("genetic algorithm stats")
+    
+    display_performance(A2,adj)
+    plot_allocation(R, A2, T, MATPLOT_SIZE)
+    A = A2
     
     print("executing")
     print(A.keys())
@@ -336,6 +339,6 @@ def main_loop():
 
 if __name__ == '__main__':
     try:
-        main_loop()
+        main_exec()
     except rospy.ROSInterruptException:
         pass
