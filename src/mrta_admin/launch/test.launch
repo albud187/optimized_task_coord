@@ -1,9 +1,0 @@
-<launch>
-    <!-- Define a launch argument with a default value -->
-    <arg name="text2print" default="Hello World!" />
-    
-    <!-- Pass the launch argument to the node as a parameter -->
-    <node pkg="mrta_admin" type="text_publisher.py" name="text_publisher" output="screen">
-        <param name="text_to_print" value="$(arg text2print)" />
-    </node>
-</launch>

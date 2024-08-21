@@ -186,7 +186,14 @@ def handle_status(msg, args):
 
 def greedy_genetic(A, N_ITER, MUTA_PROB, CROSSOVER_PROB, 
                    adj, R0, s_mat, S_MIN, inter_task, T, POP_SIZE, suitability_dict):
-    
+    """
+    inputs: A = tuple( dict[list[task]] , dict[robotAgent] ), initial solution from greedy algorithm
+            N_ITER, MUTA_PROB, CROSSOVER_PROB, POP_SIZE, s_mat, S_MIN, suitability_dict = genetic algo params
+            adj = adjaceny matrix
+            R0 = dict[robotAgent]
+    outputs: dict[list[task]] result_allocation
+    description: calculates task allocation using genetic algorthim starting with greedy algorithm.
+    """
     start_sol = Af_to_sol(A)[0]
     rkeys = Af_to_sol(A)[1]
     pop = generate_population(POP_SIZE, start_sol, R0, T, 
@@ -201,10 +208,16 @@ def greedy_genetic(A, N_ITER, MUTA_PROB, CROSSOVER_PROB,
     best_fitness_idx = fitnesses.index(min(fitnesses))
     best_solution = pop[best_fitness_idx]
     
-    new_allocation = sol_to_Af(best_solution, T, rkeys)
-    return new_allocation
+    result_allocation = sol_to_Af(best_solution, T, rkeys)
+    return result_allocation
 
 def generate_task_sequence(r_id, A, filepath):
+    """
+    inputs: str r_id, dict[list[task]] A, str filepath
+    outputs: Int16MultiArray() result_list
+    dscription: generates a list of tasks for robot with id of r_id, for publishing
+    """
+    
     global TL_checks
     list_layout = MultiArrayLayout()
     list_dim = MultiArrayDimension()
