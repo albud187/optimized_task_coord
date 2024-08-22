@@ -45,28 +45,35 @@ This repository is intended to be run using the provided docker container. In or
 git clone git@github.com:albud187/optimized_task_coord.git
 ```
 
-`cd optimized_task_coord`
+```
+cd optimized_task_coord
+```
 
 2 - Build the container:
-
-`sh dockerbuild.sh`
+```
+sh dockerbuild.sh
+```
 
 3 - Run the container:
-
-`sh dockerrun.sh`
+```
+sh dockerrun.sh
+```
 
 4 - While inside the container on project directory `/workdir`, build the ros pakages:
-
-`cd /workdir`
-
-`catkin_make`
-
-`source devel/setup.bash`
+```
+cd /workdir
+```
+```
+catkin_make
+```
+```
+source devel/setup.bash
+```
 
 5 - Make all `.py` files executable:
-
-`chmod +x ./*`
-
+```
+chmod +x ./*
+```
 ## Demos
 
 Unless otherwise stated, it is assumed that the setup is completed and you are in the docker container on `/workdir`
