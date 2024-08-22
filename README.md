@@ -18,9 +18,9 @@ This repo contains 3 ros packages that are intended to be exectued from a docker
 ```
 /current_directory/optimized_task_coord
 ├── src/
-│   ├── mrta_admin
-│   ├── mrta_main
-│   ├── ugv_action_model
+│   ├── mrta_admin/
+│   ├── mrta_main/
+│   ├── ugv_action_model/
 
 ```
 
@@ -29,9 +29,9 @@ When running the container using `dockerrun.sh`, the project directory is mounte
 ```
 /workdir
 ├── src/
-│   ├── mrta_admin
-│   ├── mrta_main
-│   ├── ugv_action_model
+│   ├── mrta_admin/
+│   ├── mrta_main/
+│   ├── ugv_action_model/
 ```
 
 ## Setup
