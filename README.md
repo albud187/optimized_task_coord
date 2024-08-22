@@ -112,7 +112,7 @@ We will use rqt to publish to the `r_n/task` topics, where `r_n` is the namespac
 
 2 - On terminal 1 execute:
 
-`roslaunch ugv_action_model multi_ugv.launch`
+`roslaunch ugv_action_model ugv_6.launch`
 
 This will launch a gazebo simulation with 6 turtlebots:
 
@@ -121,7 +121,7 @@ This will launch a gazebo simulation with 6 turtlebots:
 
 3 - On terminal 2 execute:
 
-`roslaunch mrta_admin main.launch scenario:=31T-6R`
+`roslaunch mrta_main main.launch scenario:=31T-6R`
 
 This will execute the task allocation algorithm with the example scenario `31T-6R`. After the algorithm is finished, the task allocation will be shown below. Then after closing this image, the robots will execute their assigned tasks.
 
