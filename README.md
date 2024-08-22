@@ -7,18 +7,17 @@ The tasks considered are "go to goal" and "patrol" tasks. The UGVs considered ar
 
 This repo contains 3 ros packages that are intended to be exectued from a docker container (Dockerfile included, along with build and run scripts):
 
-`mrta_admin` - launch files, robots and tasks descriptions. Additional information on the mrta_admin package is on [mrta_admin/README.md](https://github.com/albud187/optimized_task_coord/blob/main/src/mrta_admin/README.md).
+`mrta_admin` -  Additional information on the mrta_admin package is on [mrta_admin/README.md](https://github.com/albud187/optimized_task_coord/blob/main/src/mrta_admin/README.md).
 
-`mrta_main` - Task allocation algorithm. Additional information on the mrta_main package is on [mrta_main/README.md](https://github.com/albud187/optimized_task_coord/blob/main/src/mrta_main/README.md). and describes the file structure / usage of this package.
+`mrta_main` - Task allocation algorithm and task scenario descriptions. Additional information on the mrta_main package is on [mrta_main/README.md](https://github.com/albud187/optimized_task_coord/blob/main/src/mrta_main/README.md) and describes the file structure / usage of this package.
 
-`ugv_action_model` - Motion planning and state management for UGVs. Additional inforamtion on the mrta_main package is on [ugv_action_model/README.md](https://github.com/albud187/optimized_task_coord/blob/main/src/ugv_action_model/README.md). and describes the file structure / usage of this package.
+`ugv_action_model` - Motion planning, state management and task execution for UGVs. Additional inforamtion on the mrta_main package is on [ugv_action_model/README.md](https://github.com/albud187/optimized_task_coord/blob/main/src/ugv_action_model/README.md). and describes the file structure / usage of this package.
 
 
 ### _**Local Machine**_
 ```
 /current_directory/optimized_task_coord
 ├── src/
-│   ├── mrta_admin/
 │   ├── mrta_main/
 │   ├── ugv_action_model/
 
@@ -29,7 +28,6 @@ When running the container using `dockerrun.sh`, the project directory is mounte
 ```
 /workdir
 ├── src/
-│   ├── mrta_admin/
 │   ├── mrta_main/
 │   ├── ugv_action_model/
 ```
