@@ -97,10 +97,9 @@ We will use rqt to publish to the `r_n/task` topics, where `r_n` is the namespac
 
 `PoseStamped.pose.orientation.w`: Task completion indicator. Set it to 1 (or anything not 0) otherwise the robot will not move.
 
->>need image of rqt and robots moving
-
-5 - Publish the task topic. The robot corresponding to the task topic will execute the task.
-
+5 - Publish the task topic(s). The robot(s) corresponding to the task topic(s) will execute their tasks.
+An example with one robot is shown below with one task published to robot r_0, however, you can publish multiple tasks to multiple robots at the same time, and they will execute their tasks at the same time.
+![rqt example](https://github.com/albud187/optimized_task_coord/blob/main/.repo_images/rqt_demo_example.PNG)
 
 ### _**Multiple Robot Task Allocation Demo**_
 
