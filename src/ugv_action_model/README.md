@@ -32,7 +32,9 @@ Currently, `status_task_manager.py` is set to use task types of "D", "E", "F", "
 ### _**Launch File Overview*_
 
 -`ugv.launch`: Launches the ROS nodes needed to manage the status of one UGV
+
 -`ugv_2.launch`: Launches a gazebo simulation of 2 turtlebots, as well as instances of `ugv.launch` for each turtlebot with their own unique namespace. Launches `RVO_planner.py` for reciprocal velocity obstacles. Contains launch arguments for the start position of the turtlebots.
+
 -`ugv_6.launch`: same as `ugv_2.launch` but with 6 turtlebots.
 
 
