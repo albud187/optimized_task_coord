@@ -34,7 +34,5 @@ The task types, robot types in the following files must all match and be consist
   
 - `src/ugv_action_model/scripts/status_task_manager.py`
 
-
-  
-   
+In the provided example, `ScenarioName` is `31T-6R`.
  
