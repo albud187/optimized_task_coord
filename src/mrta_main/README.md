@@ -1,26 +1,28 @@
-test
+This ros package is an implementation of the greedy and genetic task allocation algorithm described in chapter 3 of my [master's thesis](https://github.com/albud187/optimized_task_coord/blob/main/.thesis/Budiman_Alfa_2023_Thesis.pdf)
 
-chapter 3 of [thesis](https://github.com/albud187/optimized_task_coord/blob/main/.thesis/Budiman_Alfa_2023_Thesis.pdf)
 
-This `mrta_admin` package can be considered to be the "entry point" for executing multiple robot task allocation scenarios. It contains the following subdirectories:
+# File Structure
+```
+/workdir
+├── src/
+│   ├── mrta_main
+│   │   ├── scenarios
+│   │   ├── launch
+│   │   ├── scripts
+│   │   │   ├── MRTA/
+│   │   │   ├── task_list_pub.py
+│   │   │   ├── system_monitor.py
+```
 
- `launch` - contains the launch file to execute the task allocation algorithm in the `mrta_main` package
+The directory `src/mrta_main/scripts/MRTA` contains the python package that implement task allocation algorithm itself. These are imported by `task_list_pub.py`, which is the ROS node that generates the lists of tasks and publishes them.
 
- `scenarios` - contains scenario descriptions. To create a new scenario, create a new subdirectory within the scenarios directory:
+The directory `src/mrta_main/scenarios` contains scenario descriptions. A scenario description consists of a subdirectory (whose name is a launch argument) that contains an `agents.csv`, `suitabilities.csv`, and `tasks.csv`.
 
-  `cd src/mrta_admin/scenarios`
+The  `agents.csv` file lists each robot by namespace (`ns` column). The entries in the `ns` must match the namespaces assigned to the robots on the gazebo simulation. In the provided example in `scenarios/31T-6R`, the namespaces match the ones assigned in `ugv_action_model/launch/ugv_6.launch`. The entries in `agents.csv` describe the type of robot (`robotType` column), the work capacity (`actionCap` column) for each robot.
 
-   `mkdir new_scenario`
+The `suitabilities.csv` file lists the suitabilitity scores by task type and robot type. Agent-task matching will only be made if the suitability score exceeds the minimum suitability requirement, which is `S_MIN` in `MRTA/_MRTA_constants.py`.
 
-   Within  `src/mrta_admin/scenarios/new_scenario`, you will need to create the following files:
 
-  You can follow the included within `src/mrta_admin/scenarios/31T-6R`
-  
-  `tasks.csv`
-
-  `agents.csv`
-
-  `suitabilities.csv`
 
   
    
