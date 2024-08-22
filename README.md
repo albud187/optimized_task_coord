@@ -83,13 +83,13 @@ All instructions here concern running a demo scenario (31T-6R) included in this 
 There are two types of demos that can be excuted from this repo, a demo using `rqt` and a demo using `mrta_main` to determine the actions taken by the robots. Both them require two terminals as follows:
 
 1 - Open two terminals and run the docker container. On both terminals execute:
-
-`sh dockerrun.sh`
-
+```
+sh dockerrun.sh
+```
 2 - On terminal 1 execute:
-
-`roslaunch ugv_action_model ugv_6.launch`
-
+```
+roslaunch ugv_action_model ugv_6.launch
+```
 This will launch a gazebo simulation with 6 turtlebots.
 ![Gazebo Simulation](https://github.com/albud187/optimized_task_coord/blob/main/.repo_images/gazebo_scenario.PNG)
 
@@ -99,9 +99,9 @@ This will launch a gazebo simulation with 6 turtlebots.
 The next steps pertain to the rqt demo.
 
 3a - On terminal 2 execute:
-
-`rqt`
-
+```
+rqt
+```
 We will use rqt to publish to the `r_n/task` topics, where `r_n` is the namespace of an individual robot and ranges from `r_0` to `r_5` for this demo.
 
 4a - The topics of `r_0/task` to `r_5/task` are of type PoseStamped, and describe tasks as follows:
@@ -125,9 +125,9 @@ An example with one robot is shown below with one task published to robot r_0, h
 The next step pertains to the `mrta_main` demo.
 
 3b - On terminal 2 execute:
-
-`roslaunch mrta_main main.launch scenario:=31T-6R`
-
+```
+roslaunch mrta_main main.launch scenario:=31T-6R
+```
 This will execute the task allocation algorithm with the example scenario `31T-6R`. After the algorithm is finished, the task allocation will be shown below. Then after closing this image, the robots will execute their assigned tasks.
 
 ![Example Task Allocation](https://github.com/albud187/optimized_task_coord/blob/main/.repo_images/example_task_allocation.PNG)
