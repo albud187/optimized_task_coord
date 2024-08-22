@@ -72,7 +72,7 @@ Unless otherwise stated, it is assumed that the setup is completed and you are i
 
 All instructions here concern running a demo scenario (31T-6R) included in this repo. Instructions to create your own scenario are on [mrta_admin/README.md](https://github.com/albud187/optimized_task_coord/blob/main/src/mrta_admin/README.md)
 
-### _**rqt Demo**_
+There are two types of demos that can be excuted from this repo, a demo using `rqt` and a demo using `mrta_main` to determine the actions taken by the robots. Both them require two terminals as follows:
 
 1 - Open two terminals and run the docker container. On both terminals execute:
 
@@ -80,17 +80,23 @@ All instructions here concern running a demo scenario (31T-6R) included in this 
 
 2 - On terminal 1 execute:
 
-`roslaunch ugv_action_model multi_ugv.launch`
+`roslaunch ugv_action_model ugv_6.launch`
 
 This will launch a gazebo simulation with 6 turtlebots.
+![Gazebo Simulation](https://github.com/albud187/optimized_task_coord/blob/main/.repo_images/gazebo_scenario.PNG)
 
-3 - On terminal 2 execute:
+
+### _**rqt Demo**_
+
+The next steps pertain to the rqt demo.
+
+3a - On terminal 2 execute:
 
 `rqt`
 
 We will use rqt to publish to the `r_n/task` topics, where `r_n` is the namespace of an individual robot and ranges from `r_0` to `r_5` for this demo.
 
-4 - The topics of `r_0/task` to `r_5/task` are of type PoseStamped, and describe tasks as follows:
+4a - The topics of `r_0/task` to `r_5/task` are of type PoseStamped, and describe tasks as follows:
 `PoseStamped.header.frame_id`: type of task. String. Set it to "A" for a goal to goal task. Set it to "D" for a patrol task.
 
 `PoseStamped.pose.position.x`: x coordinate of task location. Float.
@@ -101,26 +107,16 @@ We will use rqt to publish to the `r_n/task` topics, where `r_n` is the namespac
 
 `PoseStamped.pose.orientation.w`: Task completion indicator. Set it to 1 (or anything not 0) otherwise the robot will not move.
 
-5 - Publish the task topic(s). The robot(s) corresponding to the task topic(s) will execute their tasks.
+5a - Publish the task topic(s). The robot(s) corresponding to the task topic(s) will execute their tasks.
 An example with one robot is shown below with one task published to robot r_0, however, you can publish multiple tasks to multiple robots at the same time, and they will execute their tasks at the same time.
 ![rqt example](https://github.com/albud187/optimized_task_coord/blob/main/.repo_images/rqt_demo_example.PNG)
 
+
 ### _**Multiple Robot Task Allocation Demo**_
 
-1 - Open two terminals and run the docker container. On both terminals execute:
+The next step pertains to the `mrta_main` demo.
 
-`sh dockerrun.sh`
-
-2 - On terminal 1 execute:
-
-`roslaunch ugv_action_model ugv_6.launch`
-
-This will launch a gazebo simulation with 6 turtlebots:
-
-![Gazebo Simulation](https://github.com/albud187/optimized_task_coord/blob/main/.repo_images/gazebo_scenario.PNG)
-
-
-3 - On terminal 2 execute:
+3b - On terminal 2 execute:
 
 `roslaunch mrta_main main.launch scenario:=31T-6R`
 
