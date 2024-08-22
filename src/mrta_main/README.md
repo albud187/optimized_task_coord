@@ -1,7 +1,7 @@
 This ros package is an implementation of the greedy and genetic task allocation algorithm described in chapter 3 of my [master's thesis](https://github.com/albud187/optimized_task_coord/blob/main/.thesis/Budiman_Alfa_2023_Thesis.pdf)
 
 
-# File Structure
+# File Overview
 ```
 /workdir
 ├── src/
