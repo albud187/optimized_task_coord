@@ -22,6 +22,17 @@ The  `agents.csv` file lists each robot by namespace (`ns` column). The entries 
 
 The `suitabilities.csv` file lists the suitabilitity scores by task type and robot type. Agent-task matching will only be made if the suitability score exceeds the minimum suitability requirement, which is `S_MIN` in `MRTA/_MRTA_constants.py`.
 
+The `tasks.csv` file tasks by location (`x` , `y`), type (`taskType`), actuation cost (`taskCost`) and prerequisites (`prereqs`). This file is read and processed into the list of tasks for the task allocation algorithm.
+
+The task types, robot types in the following files must all match and be consistent:
+
+- `src/mrta_main/scenarios/ScenarioName/agents.csv`
+  
+- `src/mrta_main/scenarios/ScenarioName/suitabilities.csv`
+  
+- `src/mrta_main/scenarios/ScenarioName/tasks.csv`
+  
+- `src/ugv_action_model/scripts/status_task_manager.py`
 
 
   
