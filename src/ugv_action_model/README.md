@@ -1,4 +1,4 @@
-This ros package is an implementation of an action model for collaborative task execution with a team of UGVs for  chapter 4 and annex A3 of my [master's thesis](https://github.com/albud187/optimized_task_coord/blob/main/.thesis/Budiman_Alfa_2023_Thesis.pdf)
+This ROS package is an implementation of an action model for collaborative task execution with a team of UGVs for  chapter 4 and annex A3 of my [master's thesis](https://github.com/albud187/optimized_task_coord/blob/main/.thesis/Budiman_Alfa_2023_Thesis.pdf)
 
 
 # Key File Overview
