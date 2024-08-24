@@ -1,7 +1,7 @@
 
 SCENARIO_DIR = "/workdir/src/mrta_main/scenarios"
 
-S_MIN = 0.01
+S_MIN = 0.75
 N_ITER = 300
 POP_SIZE = 10
 MUTA_PROB = 0.7

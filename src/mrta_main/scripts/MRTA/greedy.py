@@ -205,4 +205,4 @@ def greedy_allocation(R0, T0, use_dep_ratio, check_prereqs, check_perf_idx, s_mi
         except:
             pass
     
-    return (A,R)
+    return (A,R,T)

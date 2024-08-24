@@ -29,23 +29,6 @@ def to_TA(soln):
     assigned_tasks_by_idx = [route[1:]-n_robots for route in soln]
     return assigned_tasks_by_idx
 
-# def generate_random_alloc(R0, T, suitability_dict, s_min):
-#     A = {r: [] for r in R0.keys()}
-#     T_a = set()
-#     n_robots = len(R0)
-#     robots = list(R0.keys())
-#     random.shuffle(robots)
-#     tasks = list(T.values())
-#     random.shuffle(tasks)
-#     for t in tasks:
-#         assignable_robots = [r for r in robots if suitability_dict[R0[r].agent_type][t.taskType] >= s_min and t.idx not in T_a]
-#         if assignable_robots:
-#             assigned_robot = random.choice(assignable_robots)
-#             A[assigned_robot].append(t)
-#             T_a.add(t.idx)
-#     soln = Af_to_sol(A)[0]
-#     return soln
-
 def generate_random_alloc(R0, T, suitability_dict, s_min):
     A = {r: [] for r in R0.keys()}
     T_a = set()
@@ -79,7 +62,6 @@ def generate_population(pop_size, start_sol, R0, T,
     for i in range(remainder_size):
         mod_chromo = copy.deepcopy(start_sol)
         mod_chromo = take_mutate2(mod_chromo, suitability_mat, s_min, inter_task)
-        #mod_chromo = mutate_local2(mod_chromo, inter_task)
         population.append(mod_chromo)
     return population
 
@@ -175,19 +157,6 @@ def take_mutate2(soln, suitability_mat, s_min, inter_task):
         
         return assigned_tasks_by_idx
 
-# def crossover(chromo1, chromo2):
-    
-#     n_robots = len(chromo1)
-#     chr1 = copy.deepcopy(chromo1)
-#     chr2 = copy.deepcopy(chromo2)
- 
-#     for index in range(n_robots):
-#         robot1, robot2 = chr1[index], chr2[index]
-
-#         for i in range(1,min(len(robot1),len(robot2))):
-#             if robot2[i] in robot1:
-#                 robot1[i], robot1[robot1.tolist().index(robot2[i])] = robot1[robot1.tolist().index(robot2[i])], robot1[i]
-#     return(chr1)
 
 def crossover(chromo1, chromo2, inter_task):
     
@@ -310,3 +279,35 @@ def genetic_algorithm_iteration(muta_prob, crossover_prob, population_in, adj, R
                 population[idx2] = child2
   
     return(population)
+
+def calculate_robot_cost(r, TS):
+    """
+    inputs: robotAgent r, List[Task] TS
+    outputs: float routeCost
+    description: calculates the cost for robot to do all assigned tasks
+    """
+    cost = 0
+    if len(TS)>0:
+        for i in range(len(TS)-1):
+
+            distance = np.sqrt((TS[i+1].x-TS[i].x)**2+(TS[i+1].y-TS[i].y)**2)
+            cost = cost + distance + TS[i].taskCost
+
+        cost = cost +TS[len(TS)-1].taskCost + np.sqrt((r.x-TS[0].x)**2+(r.y-TS[0].y)**2)
+    
+    return cost
+
+def update_agent_states(R0,Af):
+    R_update = copy.deepcopy(R0)
+    for r in R_update.keys():
+        R_update[r].x = Af[r][-1].x
+        R_update[r].y = Af[r][-1].y
+        R_update[r].constraintUsage = calculate_robot_cost(R0[r],Af[r])
+    return R_update
+
+def sum_allocation(A1,A2):
+    A3 = copy.deepcopy(A1)
+    for r in A3.keys():
+        for t in A2[r]:
+            A3[r].append(t)
+    return A3

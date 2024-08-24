@@ -29,7 +29,8 @@ from MRTA.genetic_helper import (Af_to_sol, sol_to_Af,
 
 from MRTA.genetic import (generate_population, 
                           genetic_algorithm_iteration, 
-                          fitness)
+                          fitness, update_agent_states,
+                          sum_allocation)
 
 from MRTA._MRTA_constants import *
 
@@ -299,11 +300,6 @@ def main_loop():
         
         TL_PUBS[r_id] = rospy.Publisher(r_id+T_task_listx, Int16MultiArray, queue_size=10)
         TL_checks[r_id]=1
-    # S_MIN = 0.01
-    # N_ITER, POP_SIZE, MUTA_PROB, CROSSOVER_PROB = 300, 10, 0.7, 0.7
-    # CHECK_DEPS, CHECK_PREREQS, CHECK_PERF_IDX = True, True, True
-    # K_D = 1
-    # MATPLOT_SIZE = 7
 
     task_file =  os.path.join(os.path.join(SCENARIO_DIR, scenario_name), "tasks.csv")
     T = csv_task(task_file)
@@ -312,33 +308,42 @@ def main_loop():
     adj = cost_matrix2(nodes)
 
     #greedy algorithm
-    A,Rf = greedy_allocation(R, T, CHECK_DEPS, CHECK_PREREQS, CHECK_PERF_IDX, 
+    A1, R1, T_u = greedy_allocation(R, T, CHECK_DEPS, CHECK_PREREQS, CHECK_PERF_IDX, 
                                 S_MIN, K_D, K_D, suitability_dict)
     print("greedy algorithm stats")
-    display_performance(A,adj)
-    plot_allocation(R, A, T, MATPLOT_SIZE)
+    display_performance(A1,adj)
+    plot_allocation(R, A1, T, MATPLOT_SIZE)
     print(" ")
     
     # #genetic algorithm
     print("executing genetic algorithm")
-
     inter_task = prereq_and_deps(T)
-    rkeys = Af_to_sol(A)[1]
+    rkeys = Af_to_sol(A1)[1]
     s_mat = suitability_matrix(suitability_dict, R, T, rkeys)
-    A2 = greedy_genetic(A, N_ITER, MUTA_PROB, CROSSOVER_PROB, 
-        adj, R, s_mat, S_MIN, inter_task, T, POP_SIZE, suitability_dict)
-    print("genetic algorithm stats")
     
-    display_performance(A2,adj)
-    plot_allocation(R, A2, T, MATPLOT_SIZE)
-    A = A2
+    #genetic stage 
+    A2 = greedy_genetic(A1, N_ITER, MUTA_PROB, CROSSOVER_PROB, 
+        adj, R, s_mat, S_MIN, inter_task, T, POP_SIZE, suitability_dict)
+    R_up = update_agent_states(R,A2)
+
+    #greedy allocaton remaining tasks
+    A3, R3, Tu3 = greedy_allocation(R_up, T_u, CHECK_DEPS, CHECK_PREREQS, CHECK_PERF_IDX, 
+                                S_MIN, K_D, K_D, suitability_dict)
+    
+    #add newly allocated tasks
+    A4 = sum_allocation(A2,A3)
+    print("genetic algorithm stats")
+
+    display_performance(A4,adj)
+    plot_allocation(R, A4, T, MATPLOT_SIZE)
+    task_alloc = A4
     
     print("executing")
-    print(A.keys())
+    print(task_alloc.keys())
     AR = {}
-    for r_i in list(A.keys()):
-        AR[r_i]= generate_task_sequence(r_i, A, task_file)
-        TS_i = generate_task_sequence(r_i, A, task_file)
+    for r_i in list(task_alloc.keys()):
+        AR[r_i]= generate_task_sequence(r_i, task_alloc, task_file)
+        TS_i = generate_task_sequence(r_i, task_alloc, task_file)
 
         print(TL_PUBS.keys())
         
