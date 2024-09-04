@@ -5,10 +5,10 @@ This ros package is an implementation of the greedy and genetic task allocation 
 ```
 /workdir
 ├── src/
-│   ├── mrta_main
-│   │   ├── scenarios
-│   │   ├── launch
-│   │   ├── scripts
+│   ├── mrta_main/
+│   │   ├── scenarios/
+│   │   ├── launch/
+│   │   ├── scripts/
 │   │   │   ├── MRTA/
 │   │   │   ├── task_list_pub.py
 │   │   │   ├── system_monitor.py
