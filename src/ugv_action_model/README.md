@@ -6,14 +6,14 @@ This ROS package is an implementation of an action model for collaborative task 
 The key files are as follows:
 
 ```
-/workdir
+/workdir/
 ├── src/
-│   ├── ugv_action_moodel
-│   │   ├── launch
+│   ├── ugv_action_moodel/
+│   │   ├── launch/
 │   │   │   ├── ugv.launch
 │   │   │   ├── ugv_2.launch
 │   │   │   ├── ugv_6.launch
-│   │   ├── scripts
+│   │   ├── scripts/
 │   │   │   ├── RVO_planner.py
 │   │   │   ├── task_list_sub.py
 │   │   │   ├── status_task_manager.py
