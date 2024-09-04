@@ -168,12 +168,7 @@ def main_loop():
         DF = update_df(df, R)
         pprint.pprint(DF)
         print(" ")
-        # pprint.pprint(ALL_POSE)
-        # print("--")
-        # print(ALL_STATUS)
-        # print("--")
-        # print(ALL_USG)
-        # print(" ")
+
         rate.sleep()
 if __name__ == '__main__':
     try:
