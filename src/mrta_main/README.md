@@ -3,7 +3,7 @@ This ros package is an implementation of the greedy and genetic task allocation 
 
 # File Overview
 ```
-/workdir
+/workdir/
 ├── src/
 │   ├── mrta_main/
 │   │   ├── scenarios/
