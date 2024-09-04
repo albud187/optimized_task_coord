@@ -14,7 +14,7 @@ This repo contains 2 ROS packages that are intended to be exectued from a docker
 
 ### _**Local Machine**_
 ```
-/current_directory/optimized_task_coord
+/current_directory/optimized_task_coord/
 ├── Dockerfile
 ├── dockerbuild.sh
 ├── dockerrun.sh
@@ -27,7 +27,7 @@ This repo contains 2 ROS packages that are intended to be exectued from a docker
 When running the container using `dockerrun.sh`, the project directory is volume mounted as `/workdir`. This directory is treated as a ROS workspace.
 ### _**Docker Container**_
 ```
-/workdir
+/workdir/
 ├── Dockerfile
 ├── dockerbuild.sh
 ├── dockerrun.sh
