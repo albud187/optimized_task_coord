@@ -1,4 +1,4 @@
-This repo contains the code for my master's thesis - "Optimized Task Coordination for Heterogenous Multi-Robot Systems", which formulated and implemented a solution for for multiple robot task allocation.
+This repo contains the code for part of my master's thesis - "Optimized Task Coordination for Heterogenous Multi-Robot Systems", which formulated and implemented a solution for for multiple robot task allocation.
 
 It uses a combination of a deterministic greedy algorithm and metaheuristic genetic algorithm to assign tasks to a team of UGVs in an optimal manner. 
 The tasks considered are "go to goal" and "patrol" tasks. The UGVs considered are turtlebots and perform the tasks in a collision free manner using reciprocal velocity obstacles.
